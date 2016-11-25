@@ -1,14 +1,9 @@
 from flask import Flask,request,render_template,redirect,url_for,send_from_directory
 from flask_jwt import JWT
 from flask_restful import Api
-from werkzeug import security
-
 import os
 
-from resources.item import Item, ItemList
-from resources.user import UserRegister
 from security import authenticate,identity
-from resources.store import StoreList,Store
 
 from resources.post import sellpost,postList
 from resources.seller import Seller,sellerLogin,sellerList
@@ -43,6 +38,14 @@ def upload_file1():
 def upload_file():
    if request.method == 'POST':
       f = request.files['file']
+      #tip = requests.post("http://burmesesoungs.com/mmnet/imgup.php",request.files['file'])
+      #tip  = urllib2.urlopen("http://burmesesoungs.com/mmnet/imgup.php",request.files['file'])
+      import requests
+      url = 'http://burmesesoungs.com/mmnet/imgup.php?username=' + "soehtet".lower()
+      files = {'file': f}
+      response = requests.post(url, files=files)
+      print(response.content)
+
       f.save(os.path.join(app.config['UPLOAD_FOLDER'],f.filename))
       return url_for('uploaded_file',
                                 filename=f.filename)

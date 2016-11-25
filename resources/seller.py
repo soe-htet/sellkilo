@@ -32,9 +32,11 @@ class Seller(Resource):
         img_url = ''
         f = request.files['file']
         if f:
-            f.save(os.path.join(app.config['UPLOAD_FOLDER'],f.filename))
-            img_url = os.path.join(url_for('uploaded_file',
-                                filename=f.filename))
+            import requests
+            url = 'http://burmesesoungs.com/mmnet/imgup.php?username=' + data['username'].lower()
+            files = {'file': f}
+            response = requests.post(url, files=files)
+            img_url = "http://www.burmesesoungs.com/mmnet/profile/" + data['username'].lower()+".jpg"
         print(img_url)
 
         seller = SellerModel(data['username'],data['password'],data['email'],img_url,data['phoneno'],data['phstatus'])
